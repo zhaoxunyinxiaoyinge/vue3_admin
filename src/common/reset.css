@@ -1,0 +1,77 @@
+body,
+html,
+p,
+a,
+ul,
+li,
+dl,
+dd,
+dt,
+form,
+ol,
+table,
+td,
+tr,
+figure,
+figcaption,
+header,
+section,
+main,
+hgroup,
+h1,
+h2,
+h3,
+h4,
+h5,
+time,
+article,
+footer,
+tfoot,
+tbody,
+thead,
+nav,
+input,
+button,
+label,
+map,
+object,
+tfoot,
+mark,
+sup,
+samp,
+span,
+strong {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #0000;
+}
+
+ul,
+ol {
+    list-style-type: none;
+
+}
+
+li {
+    list-style: none;
+}
+
+/* 解决长按页面时造成地对页面地复制 */
+* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+html,
+body,div#app {
+    height: 100%;
+    color:#000;
+}
