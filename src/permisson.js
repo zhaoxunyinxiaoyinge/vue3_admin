@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-08-17 01:12:12
- * @LastEditTime: 2021-08-21 11:12:24
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit;
- * @FilePath: \ELEment-UIe:\thinkJs\video_admin\permisson.js
- */
 import store from "./store";
 import {
     router
@@ -15,46 +7,70 @@ import "nprogress/nprogress.css";
 
 // 白名单
 const whiteList = ["/login", "/auth-redirect"];
+router.beforeEach(async (to, from, next) => {
 
-router.beforeEach((to, from, next) => {
     NProgress.start();
-    // 默认从当前页面下的本地缓层中获取token;
-    let token = "";
-    token = window.localStorage.getItem("token");
-    if (token) {
-        token = store.getters['login/getToken'];
+
+    // 本地不存在，那么我从全局转态里面获取
+    let token = store.getters["login/getToken"];
+    if (!token) {
+        token = window.localStorage.getItem("token");
+        if (token) {
+            // 调用方法本地，token,获取用户信息，菜单。
+            store.dispatch("login/checkToken", token);
+        }
     }
+
 
     if (token) {
         if (to.path === "/login") {
             next({
-                path: "/",
+                path: "/dashboard",
             });
             NProgress.done();
+
         } else {
-            const roles = store.getters['user/getRoles'];
+            let roles = store.getters["user/getRoles"];
             if (roles.length > 0) {
                 next();
+                NProgress.done();
             } else {
                 // 获取角色权限
-                // const {
-                //     roles
-                // } = await store.dispatch('user/getInfo');
-                next()
-                NProgress.done();
+                // note roles is Array and is not Object,like ["admin"]
+                // 使用roles权限对所有的路由进行过域
+                try {
+                    roles = await store.dispatch("user/getRoles");
+                    let realRoute = await store.dispatch("perssion/getFilterRoutes", roles);
+
+                    realRoute.forEach((item) => {
+                        router.addRoute(item);
+                    });
+
+                    next({
+                        ...to,
+                        replace: true
+                    })
+
+                    NProgress.done();
+
+                } catch (err) {
+
+                }
+
             }
         }
-
     } else {
         let isWhilte = whiteList.includes(to.path);
         if (isWhilte) {
             next();
         } else {
-            console.log(to.path, "to path")
             next({
                 path: "/login",
-                query: "redirect=" + to.path,
+                query: {
+                    redirect: to.path,
+                },
             });
+            next()
         }
         NProgress.done();
     }

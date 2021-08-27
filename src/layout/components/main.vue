@@ -23,7 +23,7 @@
       background-color="#7c0a23e3"
       :router="true"
       :collapse-transition="false"
-      :default-active="'/user/info'"
+      :default-active="activeRouter"
     >
       <slot></slot>
     </el-menu>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 export default {
   props: {
     collapse: {
@@ -44,8 +44,15 @@ export default {
       "https://static001.infoq.cn/resource/image/7e/59/7ea41e1bb9338b87368c6f61c7d9f059.jpg"
     );
 
+    const activeRouter = ref("");
+    onMounted(() => {
+      console.log(window.location.hash, "location");
+      activeRouter.value = window.location.hash.slice(1);
+    });
+
     return {
       logoUrl,
+      activeRouter,
     };
   },
   created() {
@@ -60,6 +67,10 @@ export default {
   border-right: none;
   background-color: #7c0a23e3;
   overflow: hidden;
+}
+
+.el-menu {
+  border-right: 1px solid #7c0a23e3;
 }
 
 .logo {

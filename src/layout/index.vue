@@ -2,9 +2,9 @@
   <div class="container">
     <Main class="menus" :collapse="isCollapse">
       <sideBar
-        :path="''"
+        :basePath="item.path"
         :key="index"
-        :list="item"
+        :item="item"
         v-for="(item, index) in data"
       ></sideBar>
     </Main>
@@ -42,7 +42,7 @@
 
       <el-header class="header">
         <div class="collapse" @click="triggerCollapse">
-          <span>|||</span>
+          <span class="el-icon-s-unfold"></span>
         </div>
 
         <div class="title">
@@ -77,7 +77,7 @@
               <el-dropdown-item>姓名:赵训银</el-dropdown-item>
               <el-dropdown-item>工号:97007164</el-dropdown-item>
               <el-dropdown-item>消息通知</el-dropdown-item>
-              <el-dropdown-item>退出</el-dropdown-item>
+              <el-dropdown-item @click="loginOut">退出</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -92,14 +92,16 @@
 <script>
 import { reactive, ref, defineComponent } from "vue";
 
-import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
+import { useRouter } from "vue-router";
+
+import { mapState, mapActions, mapGetters, mapMutations, useStore } from "vuex";
 
 import TagRouter from "./components/tag_router.vue";
 
 import Avatar from "./components/avatar";
 
 import Main from "./components/main.vue";
-import menus from "./../menu";
+
 import sideBar from "./components/sideBar.vue";
 
 export default {
@@ -108,13 +110,31 @@ export default {
   },
 
   setup() {
+    const store = useStore();
+
+    const router = useRouter();
+
     const isCollapse = ref(false);
+
     const lange = ref("zh");
-    const data = reactive(menus);
+
+    let menu = store.state.perssion.routes;
+    const data = reactive(menu);
+
+    const loginOut = () => {
+      console.log("退出了");
+      window.localStorage.token = "";
+      store.commit("login/clearToken");
+      router.push({
+        path: "/login",
+      });
+    };
+
     return {
       isCollapse,
       lange,
       data,
+      loginOut,
     };
   },
 
@@ -141,7 +161,6 @@ export default {
     },
 
     getBreadcrumb() {
-      console.log(this.$router);
       return this.$router.currentRoute.value.matched.map((item) => {
         return { path: item.path, meta: item.meta };
       });
@@ -150,13 +169,13 @@ export default {
     handleSelect() {},
   },
   watch: {
-    lang: function (newValue, oldValue) {
-      this.$i18n.locale = newValue.value == "zh" ? "zh" : "en";
-      ElMessage.success({
-        type: "success",
-        message: `当前切换地语言为:${newValue}`,
-      });
-    },
+    // lang: function (newValue, oldValue) {
+    //   this.$i18n.locale = newValue.value == "zh" ? "zh" : "en";
+    //   ElMessage.success({
+    //     type: "success",
+    //     message: `当前切换地语言为:${newValue}`,
+    //   });
+    // },
     $route: "getCurrentRouter",
   },
 };
@@ -171,7 +190,7 @@ export default {
   .menu {
     height: 100%;
     background-color: #7c0a23e3;
-    overflow-y: hidden;
+    overflow: hidden;
   }
 
   .content {
@@ -212,7 +231,7 @@ export default {
   }
 
   .title {
-    width: 200px;
+    width: 300px;
     margin-left: 10px;
     color: #000;
     a {
@@ -222,9 +241,9 @@ export default {
   }
 
   .collapse {
-    color: #fff;
-    background-color: #000;
-    width: 30px;
+    color: #000;
+    // background-color: #000;
+    font-size: 24px;
     cursor: pointer;
   }
 

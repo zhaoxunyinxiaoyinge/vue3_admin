@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-08-14 23:09:20
- * @LastEditTime: 2021-08-19 01:05:31
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \ELEment-UIe:\thinkJs\video_admin\src\store\app\login.js
- */
 export default {
     namespaced: true,
     state: {
@@ -24,6 +16,10 @@ export default {
 
         setToken(state, params) {
             state.token = params;
+        },
+
+        clearToken(state, params) {
+            state.token = ""
         }
     },
 
@@ -48,6 +44,24 @@ export default {
                     }
                 });
             })
+        },
+
+        // 处理刷新时，token丢失和页面丢失
+        checkToken({
+            state,
+            commit
+        }, params) {
+            if (params) {
+                let userInfo = {
+                    name: "xaomei",
+                    password: 123456,
+                    token: params
+                }
+
+                console.log(userInfo, "userInfo")
+
+                commit("setToken", userInfo.token);
+            }
         },
 
         resetToken({

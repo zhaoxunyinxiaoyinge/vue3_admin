@@ -74,7 +74,6 @@ export default {
               console.log(res, "登录成功");
               if (res.code == 0) {
                 window.localStorage.setItem("token", res.data.token);
-                console.log(redirect.value);
                 router.push({
                   path: redirect.value || "/",
                   query: otherQuery.value,

@@ -1,49 +1,111 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" v-if="!item.meta.hidden">
+    <template
+      v-if="
+        hasOneShowingChild(item.children, item) &&
+        (!onlyOneChild.children || onlyOneChild.noShowingChildren)
+      "
+    >
+      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
+        <el-menu-item
+          :index="resolvePath(onlyOneChild.path)"
+          :class="{ 'submenu-title-noDropdown': false }"
+        >
+          <Item
+            :title="onlyOneChild.meta.title"
+            :icon="onlyOneChild.meta.icon"
+          />
+        </el-menu-item>
+      </app-link>
+    </template>
+
     <el-submenu
-      :index="path ? path + '/' + list.path : list.path"
-      v-if="list.children && list.children.length > 0"
+      v-else
+      ref="subMenu"
+      :index="resolvePath(item.path)"
+      popper-append-to-body
     >
       <template #title>
-        <i :class="list.icon" class="icon-style"></i>
-        <span class="txt">{{ list.title }}</span>
+        <Item
+          v-if="item.meta"
+          :title="item.meta.title"
+          :icon="item.meta.icon"
+        />
       </template>
 
-      <sideBar
-        :path="list.path"
-        :key="index"
-        :list="item"
-        v-for="(item, index) in list.children"
-      ></sideBar>
+      <side-bar
+        v-for="child in item.children"
+        :key="child.path"
+        :item="child"
+        :base-path="resolvePath(child.path)"
+      />
     </el-submenu>
-
-    <el-menu-item :index="path ? path + list.path : list.path" v-else>
-      <i :class="list.icon"></i>
-      <template #title>
-        <span class="txt">{{ list.title }}</span>
-      </template>
-    </el-menu-item>
   </div>
 </template>
 
 <script>
 import { reactive, toRefs } from "vue";
+import AppLink from "./link";
+import Item from "./item";
+import path from "path";
+
 export default {
   name: "sideBar",
   props: {
-    list: {
+    item: {
       type: Object,
       default() {
         return {};
       },
     },
-    path: {
+    basePath: {
       type: String,
       default: "",
     },
   },
+
+  components: {
+    AppLink,
+    Item,
+  },
+
+  data() {
+    return {
+      onlyOneChild: null,
+    };
+  },
+
   setup(props, context) {
     return {};
+  },
+
+  methods: {
+    hasOneShowingChild(children = [], parent) {
+      const showingChildren = children.filter((item) => {
+        if (item.hidden) {
+          return false;
+        } else {
+          // Temp set(will be used if only has one showing child)
+          this.onlyOneChild = item;
+          return true;
+        }
+      });
+
+      if (showingChildren.length === 1) {
+        return true;
+      }
+
+      // Show parent if there are no child router to display
+      if (showingChildren.length === 0) {
+        this.onlyOneChild = { ...parent, path: "", noShowingChildren: true };
+        return true;
+      }
+      return false;
+    },
+
+    resolvePath(routePath) {
+      return path.resolve(this.basePath, routePath);
+    },
   },
 };
 </script>
