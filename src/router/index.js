@@ -7,7 +7,7 @@ import Login from "./../login/index";
 import NotFound from "./../notFound/index.vue";
 import Dashboard from "./../views/dashboard";
 
-import Layout from "./../layout"
+import Layout from "./../layout";
 
 let module = require.context("./../views", true, /\.js$/);
 let asyncRoute = [];
@@ -17,7 +17,8 @@ module.keys().forEach((item) => {
   asyncRoute.push(...module(item).default);
 });
 
-const containRoute = [{
+const containRoute = [
+  {
     path: "/",
     meta: {
       title: "控制面板",
@@ -25,17 +26,19 @@ const containRoute = [{
     component: Layout,
     name: "welcome",
     redirect: "/dashboard",
-    children: [{
-      name: "dashboard",
-      path: "/dashboard",
-      meta: {
-        title: "控制面板",
-        hidden: false,
-        icon: "el-icon-s-platform",
-      },
+    children: [
+      {
+        name: "dashboard",
+        path: "/dashboard",
+        meta: {
+          title: "控制面板",
+          hidden: false,
+          icon: "el-icon-s-platform",
+        },
 
-      component: Dashboard,
-    }, ],
+        component: Dashboard,
+      },
+    ],
   },
 
   {
@@ -48,15 +51,6 @@ const containRoute = [{
     component: Login,
   },
 
-  // {
-  //   path: '/:path(.*)*',
-  //   name: 'not',
-  //   meta: {
-  //     hidden: true,
-  //   },
-  //   redirect: "/404"
-  // },
-
   {
     path: "/404",
     name: "notFound",
@@ -67,19 +61,21 @@ const containRoute = [{
     component: NotFound,
   },
 
+  {
+    path: "/:pathMatch(.*)*",
+    name: "not",
+    meta: {
+      hidden: true,
+    },
+    redirect: "/404",
+  },
 ];
-
-
 
 // BUG
 const router = createRouter({
   history: createWebHashHistory(),
   routes: containRoute,
 });
-window.router = router
+window.router = router;
 
-export {
-  router,
-  asyncRoute,
-  containRoute
-};
+export { router, asyncRoute, containRoute };

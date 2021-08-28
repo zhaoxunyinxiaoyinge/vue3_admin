@@ -24,6 +24,7 @@
       ref="subMenu"
       :index="resolvePath(item.path)"
       popper-append-to-body
+      :class="isCollapse ? 'arrow' : ''"
     >
       <template #title>
         <Item
@@ -44,7 +45,8 @@
 </template>
 
 <script>
-import { reactive, toRefs } from "vue";
+import { inject } from "vue";
+
 import AppLink from "./link";
 import Item from "./item";
 import path from "path";
@@ -74,18 +76,18 @@ export default {
       onlyOneChild: null,
     };
   },
-
-  setup(props, context) {
-    return {};
+  setup() {
+    const isCollapse = inject("iscollapse");
+    return {
+      isCollapse,
+    };
   },
-
   methods: {
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter((item) => {
         if (item.hidden) {
           return false;
         } else {
-          // Temp set(will be used if only has one showing child)
           this.onlyOneChild = item;
           return true;
         }
@@ -95,7 +97,6 @@ export default {
         return true;
       }
 
-      // Show parent if there are no child router to display
       if (showingChildren.length === 0) {
         this.onlyOneChild = { ...parent, path: "", noShowingChildren: true };
         return true;
@@ -110,9 +111,15 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .sidebar {
   width: 100%;
+}
+
+.arrow {
+  .el-submenu__title .el-icon-arrow-right {
+    display: none;
+  }
 }
 
 .el-submenu {
@@ -129,7 +136,7 @@ export default {
   }
 
   .el-menu-item:hover {
-    background: rgb(71, 12, 12) !important;
+    background: #fff !important;
   }
 
   .el-menu-item {
@@ -138,8 +145,8 @@ export default {
 }
 .el-menu-item {
   .txt {
-    text-align: center;
-    margin-left: 10px;
+    // text-align: center;
+    // margin-left: 10px;
   }
 }
 </style>

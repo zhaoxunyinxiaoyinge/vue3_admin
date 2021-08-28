@@ -11,7 +11,6 @@
 
     <div class="content">
       <el-menu
-        :default-active="activeIndex2"
         class="el-menu-demo"
         mode="horizontal"
         @select="handleSelect"
@@ -90,7 +89,7 @@
   </div>
 </template>
 <script>
-import { reactive, ref, defineComponent } from "vue";
+import { reactive, ref, defineComponent, provide } from "vue";
 
 import { useRouter } from "vue-router";
 
@@ -118,11 +117,12 @@ export default {
 
     const lange = ref("zh");
 
+    provide("iscollapse", isCollapse);
+
     let menu = store.state.perssion.routes;
     const data = reactive(menu);
 
     const loginOut = () => {
-      console.log("退出了");
       window.localStorage.token = "";
       store.commit("login/clearToken");
       router.push({
@@ -189,7 +189,7 @@ export default {
 
   .menu {
     height: 100%;
-    background-color: #7c0a23e3;
+    background-color: #3742e2e3;
     overflow: hidden;
   }
 
