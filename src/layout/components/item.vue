@@ -1,7 +1,7 @@
 <template>
   <div :class="!isCollpase ? 'normal' : 'scale'">
     <i class="tubiao" :class="icon ? icon : ''"></i>
-    <span slot="title">{{ title }}</span>
+    <span class="title">{{ title }}</span>
   </div>
 </template>
 

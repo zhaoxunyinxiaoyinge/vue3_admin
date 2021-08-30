@@ -48,7 +48,11 @@ export default {
     ...mapState("app", ["tagRouter"]),
   },
   watch: {
-    currentRouter(newValue, oldValue) {},
+    $route: function (newValue, oldValue) {
+      if (newValue) {
+        window.localStorage.setItem("activeRouter", newValue.fullPath);
+      }
+    },
   },
 };
 </script>

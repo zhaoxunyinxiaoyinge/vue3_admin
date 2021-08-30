@@ -4,7 +4,8 @@ export default {
     userInfo: "",
     tagRouter: [],
     routerList: [],
-    path: ""
+    path: "",
+    deveice: "deskTop",
   },
 
   mutations: {
@@ -20,7 +21,9 @@ export default {
     },
 
     removeTagRouter(state, playLoad) {
-      let index = state.tagRouter.findIndex((item) => item.path == playLoad.path);
+      let index = state.tagRouter.findIndex(
+        (item) => item.path == playLoad.path
+      );
       let routerLength = state.tagRouter.length;
       if (routerLength > 0) {
         for (let i = 0; i < routerLength; i++) {
@@ -32,9 +35,7 @@ export default {
       }
     },
 
-    getLastTagRouter(state, playload) {
-
-    },
+    getLastTagRouter(state, playload) {},
 
     addRouterList(state, playLoad) {
       state.routerList = playLoad;
@@ -44,70 +45,44 @@ export default {
       let reg = /\//g;
       if (playLoad.indexOf("/") !== -1) {
         state.path = playLoad;
-
       } else if (reg.test("/").length > 1) {
-        state.path = state.path.substr(0, state.path.lastIndexOf("/")) + "/" + playLoad;
+        state.path =
+          state.path.substr(0, state.path.lastIndexOf("/")) + "/" + playLoad;
       } else {
         state.path = state.path + "/" + playLoad;
       }
-    }
+    },
 
+    SET_DEVICE(state, params) {
+      state.deveice = params;
+    },
   },
 
   getters: {
     getTagRouter(state, getters, rootState) {
       return state.tagRouter;
     },
-    getpath: (state, getters, rootState) => state.path
+    getpath: (state, getters, rootState) => state.path,
   },
 
   actions: {
-    actionTagRouter({
-      dispatch,
-      commit,
-      getters,
-      rootGetters
-    }, parmas) {
+    actionTagRouter({ dispatch, commit, getters, rootGetters }, parmas) {
       commit("addTagRoute", parmas);
     },
 
-    actionRemoveTagRouter({
-      dispatch,
-      commit,
-      getters,
-      rootGetters
-    }, parmas) {
+    actionRemoveTagRouter({ dispatch, commit, getters, rootGetters }, parmas) {
       commit("removeTagRouter", parmas);
     },
 
-    isActive({
-      dispatch,
-      commit,
-      getters,
-      rootGetters
-    }, parmas) {
-      commit("isActives", parmas)
+    isActive({ dispatch, commit, getters, rootGetters }, parmas) {
+      commit("isActives", parmas);
     },
-    addRouter({
-      dispatch,
-      commit,
-      getters,
-      rootGetters
-    }, parmas) {
-      commit("addRouterList", parmas)
-
+    addRouter({ dispatch, commit, getters, rootGetters }, parmas) {
+      commit("addRouterList", parmas);
     },
 
-    getPaths({
-      dispatch,
-      commit,
-      getters,
-      rootGetters
-    }, parmas) {
-      commit("getPaths", parmas)
-    }
+    getPaths({ dispatch, commit, getters, rootGetters }, parmas) {
+      commit("getPaths", parmas);
+    },
   },
-
-
-
 };

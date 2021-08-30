@@ -39,6 +39,14 @@ export default {
     ["SET_ROUTES"](state, route) {
       // 用于动态添加路由
       state.addRoute = route;
+      state.addRoute.push({
+        path: "/:pathMatch(.*)*",
+        name: "not",
+        meta: {
+          hidden: true,
+        },
+        redirect: "/404",
+      });
       // 用于生成权限菜单
       state.routes = containRoute.concat(route);
     },

@@ -7,15 +7,21 @@
       "
     >
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
-        <el-menu-item
-          :index="resolvePath(onlyOneChild.path)"
-          :class="{ 'submenu-title-noDropdown': false }"
+        <el-tooltip
+          :disabled="isCollapse ? false : true"
+          placement="right"
+          :content="onlyOneChild.meta.title"
         >
-          <Item
-            :title="onlyOneChild.meta.title"
-            :icon="onlyOneChild.meta.icon"
-          />
-        </el-menu-item>
+          <el-menu-item
+            :index="resolvePath(onlyOneChild.path)"
+            :class="{ 'submenu-title-noDropdown': false }"
+          >
+            <Item
+              :title="onlyOneChild.meta.title"
+              :icon="onlyOneChild.meta.icon"
+            />
+          </el-menu-item>
+        </el-tooltip>
       </app-link>
     </template>
 

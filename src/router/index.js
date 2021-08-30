@@ -60,15 +60,6 @@ const containRoute = [
     },
     component: NotFound,
   },
-
-  {
-    path: "/:pathMatch(.*)*",
-    name: "not",
-    meta: {
-      hidden: true,
-    },
-    redirect: "/404",
-  },
 ];
 
 // BUG

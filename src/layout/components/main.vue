@@ -7,7 +7,7 @@
           style="width: 40px; height: 40px; border-radius: 10px"
           border-radius="5px"
         ></el-image>
-        <span class="name">后台管理系统</span>
+        <router-link to="/">后台管理系统</router-link>
       </div>
 
       <div class="logo-min" v-else>
@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import { onMounted, provide, ref } from "vue";
+import { onMounted, provide, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 export default {
   props: {
     collapse: {
@@ -48,15 +49,25 @@ export default {
       "https://static001.infoq.cn/resource/image/7e/59/7ea41e1bb9338b87368c6f61c7d9f059.jpg"
     );
 
-    const activeRouter = ref("");
-    onMounted(() => {
-      activeRouter.value = window.location.hash.slice(1);
-    });
+    let activeRouters =
+      window.localStorage.getItem("activeRouter") != "undefined" || null
+        ? window.localStorage.getItem("activeRouter")
+        : "/dashboard";
+    const activeRouter = ref(activeRouters);
 
     return {
       logoUrl,
       activeRouter,
     };
+  },
+  watch: {
+    $route: function (newval, oldval) {
+      if (newval) {
+        window.localStorage.setItem("activeRouter", newval.fullPath);
+
+        this.activeRouter = newval.fullPath;
+      }
+    },
   },
 };
 </script>
@@ -92,14 +103,17 @@ export default {
   color: #fff;
   font-weight: bolder;
   position: relative;
-  .name {
+  a {
     margin-left: 10px;
+    color: #fff;
   }
 }
 
 .logo-min {
   display: flex;
   justify-content: center;
+  align-items: center;
   height: 50px;
+  box-sizing: border-box;
 }
 </style>

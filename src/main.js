@@ -1,30 +1,26 @@
-import {
-  createApp
-} from "vue";
+import { createApp } from "vue";
 
 import App from "./App.vue";
 
-import {
-  router
-} from "./router/index";
+import { router } from "./router/index";
 
 import ElementPlus from "element-plus";
 
 import "element-plus/lib/theme-chalk/index.css";
 
-require('./permisson.js');
+require("./permisson.js");
 
 // import {
 //   createI18n
 // } from "vue-i18n";
 
-import zhCn from 'element-plus/es/locale/lang/zh-cn';
+import zhCn from "element-plus/es/locale/lang/zh-cn";
 
-
-
+// 引入mock文件
+import MockFun from "./mock";
+MockFun();
 
 // import "dayjs/locale/zh-cn";
-
 
 import "./common/reset.css";
 
@@ -63,7 +59,7 @@ Store.commit("lang/setLang", zhCn);
 const app = createApp(App);
 // 语言国际化
 app.use(ElementPlus, {
-  locale: zhCn
+  locale: zhCn,
 });
 
 app.use(Store);

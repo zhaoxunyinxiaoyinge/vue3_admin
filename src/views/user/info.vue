@@ -1,12 +1,3 @@
-<!--
- * @Author: your name
- * @Date: 2021-06-09 23:55:01
- * @LastEditTime: 2021-08-08 23:42:34
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
-
- * @FilePath: \ELEment-UIe:\thinkJs\video_admin\src\views\user\info.vue
--->
 <template>
   <div class="box">
     <el-button type="primary">树形表格</el-button>

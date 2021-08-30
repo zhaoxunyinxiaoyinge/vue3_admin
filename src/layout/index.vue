@@ -10,34 +10,37 @@
     </Main>
 
     <div class="content">
-      <el-menu
-        class="el-menu-demo"
-        mode="horizontal"
-        @select="handleSelect"
-        background-color="#ffff"
-        text-color="#000"
-        active-text-color="#ffd04b"
-      >
-        <el-menu-item index="1">处理中心</el-menu-item>
-        <el-submenu index="2">
-          <template #title>我的工作台</template>
-          <el-menu-item index="2-1">选项1</el-menu-item>
-          <el-menu-item index="2-2">选项2</el-menu-item>
-          <el-menu-item index="2-3">选项3</el-menu-item>
-          <el-submenu index="2-4">
-            <template #title>选项4</template>
-            <el-menu-item index="2-4-1">选项1</el-menu-item>
-            <el-menu-item index="2-4-2">选项2</el-menu-item>
-            <el-menu-item index="2-4-3">选项3</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-menu-item index="3" disabled>消息中心</el-menu-item>
-        <el-menu-item index="4"
-          ><a href="https://www.ele.me" target="_blank"
-            >订单管理</a
-          ></el-menu-item
+      <div class="top">
+        <el-menu
+          class="el-menu-demo"
+          mode="horizontal"
+          @select="handleSelect"
+          background-color="#ffff"
+          text-color="#000"
+          active-text-color="#ffd04b"
         >
-      </el-menu>
+          <el-menu-item index="1">处理中心</el-menu-item>
+          <el-submenu index="2">
+            <template #title>我的工作台</template>
+            <el-menu-item index="2-1">选项1</el-menu-item>
+            <el-menu-item index="2-2">选项2</el-menu-item>
+            <el-menu-item index="2-3">选项3</el-menu-item>
+            <el-submenu index="2-4">
+              <template #title>选项4</template>
+              <el-menu-item index="2-4-1">选项1</el-menu-item>
+              <el-menu-item index="2-4-2">选项2</el-menu-item>
+              <el-menu-item index="2-4-3">选项3</el-menu-item>
+            </el-submenu>
+          </el-submenu>
+          <el-menu-item index="3" disabled>消息中心</el-menu-item>
+          <el-menu-item index="4"
+            ><a href="https://www.ele.me" target="_blank"
+              >订单管理</a
+            ></el-menu-item
+          >
+        </el-menu>
+        <span class="time">当前时间:{{ time }}</span>
+      </div>
 
       <el-header class="header">
         <div class="collapse" @click="triggerCollapse">
@@ -69,6 +72,8 @@
         <!-- 用户头像和昵称 -->
         <Avatar />
 
+        <ScreeFull />
+
         <el-dropdown split-button type="primary">
           个人中心
           <template #dropdown>
@@ -81,15 +86,20 @@
           </template>
         </el-dropdown>
       </el-header>
+
       <TagRouter />
+
+      <!-- 解决组件动态组件不重新渲染地问题 -->
       <div class="main">
-        <router-view></router-view>
+        <transition name="fade" mode="out-in">
+          <router-view :key="router.currentRoute.fullPath"> </router-view>
+        </transition>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { reactive, ref, defineComponent, provide } from "vue";
+import { reactive, ref, defineComponent, provide, onMounted } from "vue";
 
 import { useRouter } from "vue-router";
 
@@ -102,6 +112,8 @@ import Avatar from "./components/avatar";
 import Main from "./components/main.vue";
 
 import sideBar from "./components/sideBar.vue";
+
+import ScreeFull from "./components/screenFull.vue";
 
 export default {
   created() {
@@ -122,6 +134,21 @@ export default {
     let menu = store.state.perssion.routes;
     const data = reactive(menu);
 
+    let time = ref("");
+    let timeId = ref(null);
+
+    let timeFun = () => {
+      setTimeout(() => {
+        time.value = new Date().toLocaleString();
+        timeFun();
+      }, 1000);
+    };
+
+    onMounted(() => {
+      clearTimeout(timeId.value);
+      timeId.value = timeFun();
+    });
+
     const loginOut = () => {
       window.localStorage.token = "";
       store.commit("login/clearToken");
@@ -132,9 +159,11 @@ export default {
 
     return {
       isCollapse,
+      time,
       lange,
       data,
       loginOut,
+      router,
     };
   },
 
@@ -143,6 +172,7 @@ export default {
     Avatar,
     Main,
     sideBar,
+    ScreeFull,
   },
 
   computed: {},
@@ -198,6 +228,15 @@ export default {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .time {
+      margin-right: 20px;
+    }
   }
 
   .el-header {

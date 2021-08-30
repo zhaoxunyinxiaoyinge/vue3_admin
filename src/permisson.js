@@ -42,6 +42,7 @@ router.beforeEach(async (to, from, next) => {
             router.addRoute(item);
           });
 
+          console.log(router.getRoutes());
           next({
             path: to.path,
           });
