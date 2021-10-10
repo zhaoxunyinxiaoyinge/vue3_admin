@@ -91,9 +91,11 @@
 
       <!-- 解决组件动态组件不重新渲染地问题 -->
       <div class="main">
+        <!-- <el-scrollbar height="600px"> -->
         <transition name="fade" mode="out-in">
           <router-view :key="router.currentRoute.fullPath"> </router-view>
         </transition>
+        <!-- </el-scrollbar> -->
       </div>
     </div>
   </div>
@@ -125,7 +127,7 @@ export default {
 
     const router = useRouter();
 
-    const isCollapse = ref(false);
+    const isCollapse = ref(true);
 
     const lange = ref("zh");
 
@@ -267,10 +269,11 @@ export default {
 
   .main {
     flex: 1;
+    overflow: auto;
   }
 
   .title {
-    width: 300px;
+    width: auto;
     margin-left: 10px;
     color: #000;
     a {

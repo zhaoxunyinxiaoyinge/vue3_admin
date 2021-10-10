@@ -1,5 +1,4 @@
 import { asyncRoute, containRoute } from "./../../router";
-console.log(containRoute);
 
 function hasPermission(roles, route) {
   if (route.meta && route.meta.roles) {
@@ -32,10 +31,15 @@ export default {
   namespaced: true,
   state: {
     addRoute: [],
-    routes: containRoute,
+    routes:[]
   },
 
   mutations: {
+    ['INIT_BASE_ROUTE'] (state,playLoad){
+
+    },
+
+
     ["SET_ROUTES"](state, route) {
       // 用于动态添加路由
       state.addRoute = route;

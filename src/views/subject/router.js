@@ -21,6 +21,7 @@ export default [
           hidden: false,
         },
         component: () => import("./ts.vue"),
+        isShowTips:false
       },
 
       {
@@ -31,6 +32,7 @@ export default [
           hidden: false,
         },
         component: () => import("./js.vue"),
+        isShowTips:false
       },
     ],
   },

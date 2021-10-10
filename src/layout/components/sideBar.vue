@@ -8,7 +8,7 @@
     >
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-tooltip
-          :disabled="isCollapse ? false : true"
+          :disabled="!isCollapse ||onlyOneChild.isShowTips==false"
           placement="right"
           :content="onlyOneChild.meta.title"
         >

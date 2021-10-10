@@ -1,5 +1,5 @@
-import { Http } from "@/utils/httpCients";
-let http = new Http();
+import { http } from "@/utils/httpCients";
+// let http = new Http();
 
 export const getUserRoles = (url, method, params) => {
   return http.getRequest(url, method, params);

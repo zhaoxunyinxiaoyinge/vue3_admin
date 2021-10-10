@@ -6,6 +6,7 @@ import { router } from "./router/index";
 
 import ElementPlus from "element-plus";
 
+
 import "element-plus/lib/theme-chalk/index.css";
 
 require("./permisson.js");
@@ -17,8 +18,8 @@ require("./permisson.js");
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 
 // 引入mock文件
-import MockFun from "./mock";
-MockFun();
+import init from "./mock";
+init();
 
 // import "dayjs/locale/zh-cn";
 
@@ -57,6 +58,9 @@ Store.commit("lang/setLang", zhCn);
 // });
 
 const app = createApp(App);
+
+// 注册全局el-data-tabel组件
+
 // 语言国际化
 app.use(ElementPlus, {
   locale: zhCn,

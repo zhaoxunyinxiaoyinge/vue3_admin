@@ -18,6 +18,7 @@ export default [
           role: ["admin"],
           icon: "el-icon-s-custom",
         },
+        isShowTips:true
       },
     ],
   },

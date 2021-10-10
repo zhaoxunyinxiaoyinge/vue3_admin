@@ -9,7 +9,7 @@ import Dashboard from "./../views/dashboard";
 
 import Layout from "./../layout";
 
-let module = require.context("./../views", true, /\.js$/);
+let module = require.context("./../views", true, /router.js/);
 let asyncRoute = [];
 
 //暂时这样处理
@@ -17,7 +17,7 @@ module.keys().forEach((item) => {
   asyncRoute.push(...module(item).default);
 });
 
-const containRoute = [
+let containRoute = [
   {
     path: "/",
     meta: {

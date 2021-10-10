@@ -1,11 +1,4 @@
-/*
- * @Author: your name
- * @Date: 2021-06-12 09:44:29
- * @LastEditTime: 2021-08-27 17:26:46
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \ELEment-UIe:\thinkJs\video_admin\src\store\index.js
- */
+
 import {
     createStore
 } from 'vuex'

@@ -1,32 +1,51 @@
 <template>
-  <div>
-    <el-form ref="form" v-model="formData">
-      <el-form-item :key="index" v-for="(item, index) in formItem">
-        <el-input v-if="item.type === 'input'" clearable></el-input>
-        <el-select v-else>
-          <el-options
-            :key="sIndex"
-            v-for="(sItem, sIndex) in item.options"
-            clearabel
-          >
-            {{ sItem.label }}
-          </el-options>
-        </el-select>
-      </el-form-item>
-    </el-form>
-  </div>
+  <Fragment>
+    <!-- 表单标题 -->
+    <div class="title" ></div>
+
+  <el-form  :model=""  :rules=""  :inline=""  :label-position=""   :label-width="" :size=""  :disabled=""   >
+    <!--form 表单写入 -->
+
+    <!-- input 框的写入 -->
+
+    <!-- select选项框的写入 -->
+
+    <!-- select 加载更多 -->
+
+    <!-- radio 组的选择-->
+
+    <!-- checkbox sing -->
+
+    <!-- checkbox group -->
+
+    <!-- date日期选择器 -->
+
+    <!-- 日期时间框 -->
+
+    <!-- 时间框 -->
+
+    <!-- 图片上传 -->
+
+    <!-- 级联选择框 -->
+
+    <!-- 文件上传 -->
+
+    <!-- 文本描述 -->
+
+    <!-- 数字框 -->
+
+    <!-- tooptip 文本提示 -->
+  </el-form>
+  </Fragment>
 </template>
 <script>
-import { reactive } from "vue";
+import { reactive,Fragment} from "vue";
 export default {
   props: {
-    formItem: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
+    model:{},
+    
   },
+
   setup() {
     const item = this.props;
     let formData = reactive({});

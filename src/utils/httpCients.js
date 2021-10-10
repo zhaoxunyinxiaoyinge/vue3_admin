@@ -35,4 +35,5 @@ class Http {
   }
 }
 
-export { Http };
+let http=new Http();
+export { http };
