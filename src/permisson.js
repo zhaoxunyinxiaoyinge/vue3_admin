@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-09-16 22:51:51
+ * @LastEditTime: 2021-12-12 21:48:12
+ * @LastEditors: your name
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \vue-管理系统\video_admin\src\permisson.js
+ */
 import store from "./store";
 import { router } from "./router";
 import NProgress from "nprogress";
@@ -11,6 +19,7 @@ router.beforeEach(async (to, from, next) => {
 
   // 本地不存在，那么我从全局转态里面获取
   let token = store.getters["login/getToken"];
+
   if (!token) {
     token = window.localStorage.getItem("token");
     if (token) {

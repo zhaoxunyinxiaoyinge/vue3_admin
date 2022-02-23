@@ -6,7 +6,7 @@ import "nprogress/nprogress.css";
 import { ElMessage } from "element-plus";
 
 const getToken = () => {
-  let token = window.localStorage.getItem("token");
+  let token = window.localStorage.getItem("token") || "";
   if (token) {
     return token;
   } else {
@@ -21,12 +21,16 @@ const getToken = () => {
 };
 
 const handleResponse = (res) => {
-  if (res.code === 401) {
+  if (res.data.code === 401) {
     ElMessage.error("当前用户没有权限");
     return;
   }
 
-  if (res.code !== 200) {
+  if (res.data.code == 0) {
+    return res.data;
+  }
+
+  if (res.data.code !== 200) {
     //指定不同地转态码之后，执行弹框提示
     ElMessage({
       message: res.message || res.msg || "Error",
@@ -34,7 +38,7 @@ const handleResponse = (res) => {
       duration: 5 * 1000,
     });
 
-    if (res.code == 50001) {
+    if (res.data.code == 50001) {
       MessageBox.confirm(
         "您已经退出, 可以继续停留在本页面, 也可以重新登录",
         "确定退出",
@@ -49,7 +53,6 @@ const handleResponse = (res) => {
         location.reload();
       });
     }
-
     return Promise.reject(new Error(res.message));
   } else {
     return res.data;
@@ -78,8 +81,9 @@ Server.interceptors.request.use(
 
 Server.interceptors.response.use(
   (config) => {
+    let res = handleResponse(config);
     NProgress.done();
-    return Promise.resolve(config.data);
+    return Promise.resolve(res);
   },
   (err) => {
     NProgress.done();

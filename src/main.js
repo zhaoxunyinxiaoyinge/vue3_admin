@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-09-16 22:51:51
+ * @LastEditTime: 2021-12-12 22:31:48
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \vue-管理系统\video_admin\src\main.js
+ */
 import { createApp } from "vue";
 
 import App from "./App.vue";
@@ -6,14 +14,16 @@ import { router } from "./router/index";
 
 import ElementPlus from "element-plus";
 
+import SvgIcon from "./components/svg/svg";
+
+// import VueCropper from 'vue-cropperjs';
+// import 'cropperjs/dist/cropper.css';
 
 import "element-plus/lib/theme-chalk/index.css";
 
 require("./permisson.js");
 
-// import {
-//   createI18n
-// } from "vue-i18n";
+import { createI18n } from "vue-i18n";
 
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 
@@ -21,7 +31,7 @@ import zhCn from "element-plus/es/locale/lang/zh-cn";
 import init from "./mock";
 init();
 
-// import "dayjs/locale/zh-cn";
+import "dayjs/locale/zh-cn";
 
 import "./common/reset.css";
 
@@ -51,6 +61,15 @@ Store.commit("lang/setLang", zhCn);
 //     // 没有定义 message 字段，会 fallback 回到 en 去, fallbackLocale 的定义在下方 👇
 //   },
 // };
+
+//全局自动注册svg文件的使用
+const requireAll = (requireContext) =>
+  requireContext.keys().map(requireContext);
+const req = require.context("./assets/svgIcon", true, /\.svg$/); //自动引入
+console.log(requireAll(req));
+
+import { ecode } from "@/utils/createErcode";
+
 // const i18n = createI18n({
 //   locale: zhLocale.name,
 //   fallbackLocale: enLocale.name,
@@ -59,8 +78,6 @@ Store.commit("lang/setLang", zhCn);
 
 const app = createApp(App);
 
-// 注册全局el-data-tabel组件
-
 // 语言国际化
 app.use(ElementPlus, {
   locale: zhCn,
@@ -68,6 +85,11 @@ app.use(ElementPlus, {
 
 app.use(Store);
 
+app.use(ecode);
 // app.use(i18n);
 
 app.use(router).mount("#app");
+
+// app.component(VueCropper);
+
+app.component("svg-icon", SvgIcon);

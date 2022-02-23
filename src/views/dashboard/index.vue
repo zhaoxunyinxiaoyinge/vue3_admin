@@ -57,7 +57,7 @@ export default {
 
     const getData = (obj) => {
       getEchearts(obj).then((res) => {
-            init(res);
+            init(res.data);
       });
     };
 

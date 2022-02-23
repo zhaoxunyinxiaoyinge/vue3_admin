@@ -1,7 +1,10 @@
 <template>
-  <div></div>
+  <div>
+      <svg-icon :className="'img'"></svg-icon>
+  </div>
 </template>
 <script>
+
 export default {
   setup() {},
 };
