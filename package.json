@@ -84,6 +84,13 @@
     },
     "rules": {}
   },
+  "lint-staged": {
+    "src/**/*.js": [
+      "eslint --fix --ext .js",
+      "prettier --write",
+      "git add"
+    ]
+  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
